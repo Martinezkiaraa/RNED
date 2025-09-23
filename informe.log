@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.9.23)  23 SEP 2025 13:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.9.23)  23 SEP 2025 14:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -541,7 +541,10 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 [1
 
 {C:/Users/45863640/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-(informe.toc)
+(informe.toc
+LaTeX Info: Redefining \. on input line 1.
+LaTeX Info: Redefining \% on input line 1.
+)
 \tf@toc=\write4
 \openout4 = `informe.toc'.
 
@@ -552,19 +555,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 [3]
 
 [4]
-Overfull \hbox (17.59833pt too wide) in paragraph at lines 225--226
-\T1/cmr/m/n/12 ra en-con-trar el si-guien-te es-ta-do. Es-to se pue-de ha-cer c
-on fun-cio-nes co-mo \T1/cmtt/m/n/12 numpy.linalg.solve
- []
+
+LaTeX Warning: Reference `fig:heat_explicit' on page 5 undefined on input line 
+237.
 
 
 
 [5]
-
-LaTeX Warning: Reference `fig:heat_explicit' on page 6 undefined on input line 
-255.
-
-
 
 [6] (informe.aux
 LaTeX Info: Redefining \. on input line 11.
@@ -584,38 +581,34 @@ Package rerunfilecheck Warning: File `informe.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `informe.out':
-(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
-(rerunfilecheck)             After:  9CD6D3E3CC5F7EF38CC4F2E9AE8FE7CE;1828.
+(rerunfilecheck)             Before: A3BB873508ED3205E1BAB556C74DD275;1553
+(rerunfilecheck)             After:  CB67EB9176F7D2ED6EF903EB48C65102;1611.
  ) 
 Here is how much of TeX's memory you used:
- 15678 strings out of 473682
- 241276 string characters out of 5729106
- 955766 words of memory out of 5000000
- 38537 multiletter control sequences out of 15000+600000
- 573646 words of font info for 77 fonts, out of 8000000 for 9000
+ 15269 strings out of 473682
+ 237706 string characters out of 5729106
+ 838766 words of memory out of 5000000
+ 38138 multiletter control sequences out of 15000+600000
+ 571491 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,308b,1268s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,6n,79p,511b,534s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\e
-ctt1000.pk> <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
-/dpi600\ecrm0600.pk> <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/ljfour/jk
-nappen/ec/dpi600\ectt1200.pk> <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/
-ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\45863640\AppData\Local\MiKTeX\
-fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\45863640\AppData\Loca
-l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\45863640\App
-Data\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\458
-63640\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\
-Users\45863640\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074
-.pk> <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600
-\ecbx2074.pk><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb
-><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program
- Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX/fonts/type1/
-public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.p
-fb>
-Output written on informe.pdf (6 pages, 196675 bytes).
+cbx1440.pk> <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
+/dpi600\ecrm1200.pk> <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/ljfour/jk
+nappen/ec/dpi600\ecbx1200.pk> <C:\Users\45863640\AppData\Local\MiKTeX\fonts/pk/
+ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\45863640\AppData\Local\MiKTeX\
+fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\45863640\AppData\Loca
+l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk> <C:\Users\45863640\App
+Data\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk><C:/Program Fi
+les/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX/f
+onts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfont
+s/cm/cmr12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb
+><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program
+ Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on informe.pdf (6 pages, 179452 bytes).
 PDF statistics:
- 440 PDF objects out of 1000 (max. 8388607)
- 38 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 399 PDF objects out of 1000 (max. 8388607)
+ 32 named destinations out of 1000 (max. 500000)
+ 73 words of extra memory for PDF output out of 10000 (max. 10000000)
 
