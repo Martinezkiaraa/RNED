@@ -16,7 +16,10 @@
 \usepackage{booktabs}           % Tablas bonitas
 
 % Configuración de márgenes
-\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.0cm, right=2.0cm}
+
+% Eliminar sangría en todos los párrafos
+\setlength{\parindent}{0pt}
 
 % Configuración del código fuente
 \lstset{
@@ -57,20 +60,22 @@ Resoluciones Numéricas de Ecuaciones Diferenciales}
 
 % ======== SECCIONES ========
 
-\section{Ecuación del Calor}
-\subsection{Formulación matemática - Derivación de los métodos explícito e implícito}
+\part{Ecuación del Calor}
 
-En esta sección vamos a ver cómo se llega a las fórmulas de los métodos explícito e implícito para resolver la ecuación del calor usando diferencias finitas. La idea es empezar de la ecuación original, discretizarla, y después aproximar las derivadas.
+\section{Formulación matemática - Derivación de los métodos explícito e implícito}
 
-\paragraph{La ecuación que queremos resolver,}
+En esta sección vamos a ver cómo se llega a las fórmulas de los métodos explícito e implícito para resolver la ecuación del calor usando diferencias finitas.  
+La idea es empezar de la ecuación original, discretizarla, y después aproximar las derivadas.
 
-la ecuación del calor en una dimensión es:
+\subsection{La ecuación que queremos resolver}
+
+La ecuación del calor en una dimensión es:
 \[
 \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2},
-\quad x \in (0,1), \quad t>0
+\quad x \in (0,1), \quad t > 0
 \]
 
-Donde:
+donde:
 \begin{itemize}
     \item $u(x,t)$ representa la temperatura en el punto $x$ y tiempo $t$.
     \item $\alpha > 0$ es la constante de difusión térmica.
@@ -78,25 +83,30 @@ Donde:
 
 Además, tenemos condiciones de frontera de Dirichlet:
 \[
-u(0,t) = 0, \quad u(1,t) = 0
+u(0,t) = 0, \quad u(1,t) = 0,
 \]
 y una condición inicial que nos da la distribución de temperatura al inicio:
 \[
 u(x,0) = f(x).
 \]
 
-En palabras, se trata de una barra de longitud 1 donde los extremos se mantienen a temperatura cero. Sabemos cómo estaba la temperatura al comienzo y queremos ver cómo cambia con el tiempo.
+En palabras, se trata de una barra de longitud 1 donde los extremos se mantienen a temperatura cero.  
+Sabemos cómo estaba la temperatura al comienzo y queremos ver cómo cambia con el tiempo.
 
-\paragraph{Discretización: malla de espacio y tiempo.}
+\subsection{Discretización: malla de espacio y tiempo}
 
 Para resolver el problema de forma numérica dividimos el espacio y el tiempo en puntos separados por pasos fijos:
+
 \begin{itemize}
-    \item Dividimos el intervalo espacial $[0,1]$ en $N$ puntos con separación $\Delta x$. Así, las posiciones son:
+    \item Dividimos el intervalo espacial $[0,1]$ en $N$ puntos con separación $\Delta x$.  
+    Así, las posiciones son:
     \[
     x_j = j\Delta x, \quad j = 0,1,\dots,N
     \]
-    donde $\Delta x = \frac{1}{N}$.
-    \item El tiempo se divide en pasos de tamaño $\Delta t$. Los instantes de tiempo quedan como:
+    donde $\Delta x = \tfrac{1}{N}$.
+    
+    \item El tiempo se divide en pasos de tamaño $\Delta t$.  
+    Los instantes de tiempo quedan como:
     \[
     t_n = n\Delta t, \quad n = 0,1,2,\dots,M
     \]
@@ -106,108 +116,104 @@ Para resolver el problema de forma numérica dividimos el espacio y el tiempo en
 Notación: llamamos $u_j^n$ a la aproximación numérica de $u(x_j,t_n)$.  
 Los nodos de frontera son $j=0$ y $j=N$ (donde ya conocemos $u$ gracias a las condiciones de borde). Los nodos internos son $j=1,\dots,N-1$, que son los que vamos a actualizar.
 
-\paragraph{Aproximación de las derivadas con diferencias finitas.}
+\subsection{Aproximación de las derivadas con diferencias finitas}
 
-Vamos a reemplazar las derivadas por aproximaciones usando diferencias finitas:
+Reemplazamos las derivadas por aproximaciones usando diferencias finitas:
+
 \begin{itemize}
     \item Para la derivada temporal usamos una \textbf{diferencia hacia adelante}:
     \[
     \frac{\partial u}{\partial t}(x_j,t_n) \approx \frac{u_j^{n+1}-u_j^n}{\Delta t}.
     \]
+
     \item Para la segunda derivada espacial usamos \textbf{diferencias centradas}:
     \[
     \frac{\partial^2 u}{\partial x^2}(x_j,t_n) \approx \frac{u_{j+1}^n - 2u_j^n + u_{j-1}^n}{(\Delta x)^2}.
     \]
 \end{itemize}
 
-Esto introduce un error, pero mientras $\Delta x$ y $\Delta t$ sean pequeños, la aproximación es bastante buena.
+Estas aproximaciones introducen un error, pero mientras $\Delta x$ y $\Delta t$ sean pequeños, la aproximación es bastante buena.
 
-\paragraph{Sustitución en la ecuación original - Derivación explícito.}
+\subsection{Método explícito}
 
-Si reemplazamos las aproximaciones en la ecuación del calor, nos queda:
+Partimos de la ecuación del calor discretizada:
 \[
 \frac{u_j^{n+1}-u_j^n}{\Delta t} = \alpha \frac{u_{j+1}^n - 2u_j^n + u_{j-1}^n}{(\Delta x)^2}.
 \]
 
-Definimos un parámetro muy útil llamado $r$:
+\subsection*{Definición de $r$:}
+Definimos un parámetro muy útil:
 \[
 r = \frac{\alpha \Delta t}{(\Delta x)^2}.
 \]
-Este parámetro combina la constante física \(\alpha\) con el paso de tiempo \(\Delta t\) y el paso espacial \(\Delta x\). 
+Este parámetro combina la constante física $\alpha$ con el paso de tiempo $\Delta t$ y el paso espacial $\Delta x$.
 
-Reemplazando esta definición en la ecuación anterior:
+\paragraph{Paso 1. Sustituir $r$}  
 \[
 u_j^{\,n+1}-u_j^{\,n} = r\big(u_{j+1}^{\,n}-2u_j^{\,n}+u_{j-1}^{\,n}\big).
 \]
 
-El siguiente objetivo es aislar \(u_j^{\,n+1}\) para que quede explícito. Sumamos \(u_j^{\,n}\) en ambos lados:
+\paragraph{Paso 2. Aislar $u_j^{\,n+1}$}  
 \[
 u_j^{\,n+1} = u_j^{\,n} + r\big(u_{j+1}^{\,n}-2u_j^{\,n}+u_{j-1}^{\,n}\big).
 \]
 
-Expandimos el paréntesis:
+\paragraph{Paso 3. Expandir el paréntesis}  
 \[
 u_j^{\,n+1} = u_j^{\,n} + r\,u_{j+1}^{\,n} - 2r\,u_j^{\,n} + r\,u_{j-1}^{\,n}.
 \]
 
-Agrupando términos similares, en especial los que dependen de \(u_j^n\):
+\paragraph{Paso 4. Agrupar términos}  
 \[
 u_j^{\,n+1} = (1 - 2r)u_j^{\,n} + r\,u_{j-1}^{\,n} + r\,u_{j+1}^{\,n}.
 \]
-\newline
-Esta última ecuación muestra que el nuevo valor de temperatura en la posición \(j\) y tiempo \(n+1\) se calcula como una combinación lineal de:
+
+El nuevo valor de temperatura en $j$ depende del valor previo en el mismo punto y de sus dos vecinos. Es una combinación lineal:
 \begin{itemize}
-    \item El valor previo en la misma posición, \(u_j^n\), ponderado por \((1-2r)\).
-    \item El vecino de la izquierda, \(u_{j-1}^n\), ponderado por \(r\).
-    \item El vecino de la derecha, \(u_{j+1}^n\), también ponderado por \(r\).
+    \item $(1-2r)u_j^n$ (el valor previo en $j$),
+    \item $r\,u_{j-1}^n$ (vecino izquierdo),
+    \item $r\,u_{j+1}^n$ (vecino derecho).
 \end{itemize}
 
-
-Así, nos queda el esquema \textbf{explícito} completo:
+\paragraph{Esquema explícito}  
 \[
-\boxed{u_j^{\,n+1} = (1 - 2r)u_j^{\,n} + r\,u_{j-1}^{\,n} + r\,u_{j+1}^{\,n}},
+\boxed{u_j^{\,n+1} = (1 - 2r)u_j^{\,n} + r\,u_{j-1}^{\,n} + r\,u_{j+1}^{\,n}}
 \]
 
-
-\paragraph{Condición de estabilidad:}  
+\subsection*{Condición de estabilidad:}
 Este método solo funciona bien si se cumple:
 \[
 r = \frac{\alpha \Delta t}{(\Delta x)^2} \leq \frac{1}{2}.
 \]
-Si no se cumple, la solución explota y empieza a oscilar de manera irreal.
+De lo contrario, la solución numérica se vuelve inestable, con oscilaciones crecientes que no reflejan el fenómeno físico real.
 
-\paragraph{Interpretación:}  
-La temperatura en $j$ tiende a ``suavizarse'' dependiendo de cómo están los vecinos $j-1$ y $j+1$. Es como un promedio que se va corrigiendo paso a paso.
+\subsection*{Interpretación:}
+La temperatura en $j$ tiende a ``suavizarse'' dependiendo de cómo están los vecinos $j-1$ y $j+1$. Es como un promedio ponderado que se va corrigiendo paso a paso.
 
-\paragraph{Derivación Método implícito.}
+\subsection{Método implícito}
 
-\paragraph{Partimos de las aproximaciones}  
-Usamos la misma aproximación temporal (diferencia hacia adelante en el numerador) pero evaluamos la segunda derivada espacial en el tiempo \(n+1\):
+Partimos de la misma aproximación temporal, pero evaluando la derivada espacial en $n+1$:
 \[
 \frac{u_j^{\,n+1}-u_j^{\,n}}{\Delta t}
 \approx
 \alpha\,\frac{u_{j+1}^{\,n+1}-2u_j^{\,n+1}+u_{j-1}^{\,n+1}}{(\Delta x)^2}.
 \]
 
-\paragraph{Paso 1. Multiplicar por \(\Delta t\)}  
-Multiplicamos ambos lados por \(\Delta t\) para quitar el denominador:
+\paragraph{Paso 1. Multiplicar por $\Delta t$}  
 \[
 u_j^{\,n+1}-u_j^{\,n}
 = \alpha\,\frac{\Delta t}{(\Delta x)^2}\big(u_{j+1}^{\,n+1}-2u_j^{\,n+1}+u_{j-1}^{\,n+1}\big).
 \]
 
-\paragraph{Paso 2. Definir \(r\) y sustituir}  
-Como antes definimos
+\paragraph{Paso 2. Definir $r$ y sustituir}  
 \[
 r := \frac{\alpha\,\Delta t}{(\Delta x)^2},
 \]
-y reemplazamos:
 \[
 u_j^{\,n+1}-u_j^{\,n} = r\big(u_{j+1}^{\,n+1}-2u_j^{\,n+1}+u_{j-1}^{\,n+1}\big).
 \]
 
-\paragraph{Paso 3. Llevar todos los términos con \(u^{\,n+1}\) al mismo lado}  
-Queremos agrupar las incógnitas de tiempo \(n+1\) a la izquierda y dejar el término conocido \(u_j^{\,n}\) a la derecha. Para eso pasamos el término de la derecha al lado izquierdo:
+\paragraph{Paso 3. Reorganizar términos}  
 \[
 u_j^{\,n+1} - r\big(u_{j+1}^{\,n+1}-2u_j^{\,n+1}+u_{j-1}^{\,n+1}\big) = u_j^{\,n}.
 \]
@@ -217,38 +223,47 @@ u_j^{\,n+1} - r\big(u_{j+1}^{\,n+1}-2u_j^{\,n+1}+u_{j-1}^{\,n+1}\big) = u_j^{\,n
 u_j^{\,n+1} - r\,u_{j+1}^{\,n+1} + 2r\,u_j^{\,n+1} - r\,u_{j-1}^{\,n+1} = u_j^{\,n}.
 \]
 
-\paragraph{Paso 5. Agrupar coeficientes según cada incógnita}  
-Agrupamos los coeficientes de \(u_{j-1}^{\,n+1}, u_j^{\,n+1}, u_{j+1}^{\,n+1}\):
-\[
-(-r)\,u_{j-1}^{\,n+1} + (1+2r)\,u_j^{\,n+1} + (-r)\,u_{j+1}^{\,n+1} = u_j^{\,n}.
-\]
-
-De forma más explícita:
+\paragraph{Paso 5. Agrupar coeficientes}  
 \[
 -r\,u_{j-1}^{\,n+1} + (1+2r)\,u_j^{\,n+1} - r\,u_{j+1}^{\,n+1} = u_j^{\,n}.
 \]
 
-\paragraph{Paso 6. Interpretación local}  
-Para cada nodo interior \(j\) la ecuación relaciona al nuevo valor \(u_j^{\,n+1}\) con sus vecinos en el mismo nuevo tiempo \(n+1\). No hay una fórmula directa para \(u_j^{\,n+1}\) en términos solo de valores en \(n\); por eso hay que resolver un sistema.
+\paragraph{Esquema implícito}  
+\[
+\boxed{-r\,u_{j-1}^{\,n+1} + (1+2r)\,u_j^{\,n+1} - r\,u_{j+1}^{\,n+1} = u_j^{\,n}}
+\]
 
-\subsection{Sistemas lineales y forma matricial}
-\paragraph{Recordemos el dominio:}
+\subsection*{Interpretación:} 
+En este caso cada valor $u_j^{\,n+1}$ está acoplado con sus vecinos en el mismo nivel temporal $n+1$.  
+Por eso, no hay una fórmula directa: es necesario resolver un sistema lineal en cada paso.  
+La gran ventaja es que el método es \textbf{incondicionalmente estable}, sin restricciones sobre $r$.
+
+\subsection{Resumen comparativo}
+
+\begin{itemize}
+    \item \textbf{Explícito:} sencillo de implementar, no requiere resolver sistemas, pero exige la condición $r \leq \tfrac{1}{2}$.
+    \item \textbf{Implícito:} más costoso porque requiere resolver un sistema en cada paso, pero estable para cualquier $\Delta t$ y $\Delta x$.
+\end{itemize}
+
+\section{Sistemas lineales y forma matricial}
+
+\subsection{Recordemos el dominio}
+
 Tenemos \(N+1\) puntos en el espacio, numerados de \(j=0\) a \(j=N\).  
-Los extremos (\(j=0\) y \(j=N\)) son conocidos por las condiciones de frontera \(u(0,t)=u(1,t)=0\).  
-Los valores desconocidos están en los puntos internos \(j=1,2,\dots,N-1\).  
-Eso significa que en cada instante de tiempo tenemos que trabajar con un vector de tamaño \(N-1\).
+Los extremos (\(j=0\) y \(j=N\)) son conocidos gracias a las condiciones de frontera \(u(0,t)=u(1,t)=0\). Los valores desconocidos corresponden a los nodos internos \(j=1,2,\dots,N-1\).  
 
----
+Esto significa que en cada instante de tiempo debemos trabajar con un vector de tamaño \(N-1\), que contiene únicamente los valores de los nodos internos.
 
-\subsubsection*{1. Método explícito como sistema lineal}
+\subsection{Método explícito como sistema lineal}
 
-El método explícito tiene esta fórmula final:
+El método explícito en su forma final es:
 \[
 u_j^{n+1} = (1-2r)u_j^n + r\,u_{j-1}^n + r\,u_{j+1}^n, 
 \quad j = 1, 2, \dots, N-1.
 \]
 
-Esto se puede escribir como un producto matricial:
+\subsection*{Forma matricial:}
+Podemos escribir esta relación como:
 \[
 U^{n+1} = B\,U^n,
 \]
@@ -256,12 +271,12 @@ donde:
 \[
 U^n = 
 \begin{bmatrix}
-u_1^n \\ u_2^n \\ \vdots \\ u_{N-2}^n \\ u_{N-1}^n
+u_1^n \\[4pt] u_2^n \\[4pt] \vdots \\[4pt] u_{N-2}^n \\[4pt] u_{N-1}^n
 \end{bmatrix}
 \]
-es el vector con los valores de los nodos internos en el tiempo \(t_n\).
+es el vector con los valores de los nodos internos en el tiempo \(t_n\). \\
 
-La matriz \(B\) tiene forma tridiagonal:
+La matriz \(B\) tiene estructura tridiagonal:
 \[
 B = 
 \begin{bmatrix}
@@ -273,31 +288,32 @@ r     & 1-2r & r     & \cdots & 0 \\[4pt]
 \end{bmatrix}.
 \]
 
-\paragraph{Interpretación:}  
-Esto significa que para pasar del tiempo \(t_n\) al tiempo \(t_{n+1}\), basta con multiplicar el vector actual \(U^n\) por la matriz \(B\).  
----
+\subsection*{Interpretación:}
+Para pasar del tiempo \(t_n\) al tiempo \(t_{n+1}\), basta con multiplicar el vector \(U^n\) por la matriz \(B\).  
+El método explícito se reduce, por lo tanto, a una simple multiplicación matricial.
 
-\subsubsection*{2. Método implícito como sistema lineal}
+\subsection{Método implícito como sistema lineal}
 
-En el método implícito, la ecuación final para cada nodo es:
+En el método implícito, la ecuación para cada nodo es:
 \[
 -r\,u_{j-1}^{n+1} + (1+2r)\,u_j^{n+1} - r\,u_{j+1}^{n+1} = u_j^n,
 \quad j = 1, 2, \dots, N-1.
 \]
 
-Esto se puede ver como un sistema lineal:
+\subsection*{Forma matricial:} 
+Esto se puede escribir como un sistema lineal:
 \[
 A\,U^{n+1} = U^n,
 \]
-donde \(U^{n+1}\) es el vector de incógnitas en el nuevo tiempo, igual que antes:
+donde \(U^{n+1}\) es el vector de incógnitas en el nuevo tiempo:
 \[
 U^{n+1} = 
 \begin{bmatrix}
-u_1^{n+1} \\ u_2^{n+1} \\ \vdots \\ u_{N-2}^{n+1} \\ u_{N-1}^{n+1}
+u_1^{n+1} \\[4pt] u_2^{n+1} \\[4pt] \vdots \\[4pt] u_{N-2}^{n+1} \\[4pt] u_{N-1}^{n+1}
 \end{bmatrix}.
-\]
+\] \\
 
-La matriz \(A\) también es tridiagonal, pero con valores diferentes:
+La matriz \(A\) también es tridiagonal, pero con coeficientes distintos:
 \[
 A = 
 \begin{bmatrix}
@@ -309,42 +325,320 @@ A =
 \end{bmatrix}.
 \]
 
-\paragraph{Interpretación:}  
-En este caso, no podemos calcular \(U^{n+1}\) directamente porque está "mezclado" dentro de la ecuación.  
-Para avanzar un paso en el tiempo hay que resolver el sistema lineal \(A\,U^{n+1}=U^n\).  
+\subsection*{Interpretación:} 
+En este caso, el nuevo vector \(U^{n+1}\) no se puede calcular de forma directa, ya que está involucrado en ambos lados de la ecuación.  
+Para avanzar un paso en el tiempo es necesario resolver el sistema lineal:
+\[
+A\,U^{n+1} = U^n.
+\] \\
+
 Esto se puede hacer en Python con:
 \[
 \texttt{U\_next = numpy.linalg.solve(A, U)}
 \]
-\subsection{Resultados}
-En la Figura~\ref{fig:heat_explicit} se observa la evolución temporal de la temperatura usando el método explícito.
 
-% Comentado temporalmente hasta generar la imagen
+\subsection{Resumen comparativo}
+
+\begin{itemize}
+    \item \textbf{Explícito:}  
+    \[
+    U^{n+1} = B\,U^n
+    \]
+    Evoluciona mediante una multiplicación matricial sencilla.
+    
+    \item \textbf{Implícito:}  
+    \[
+    A\,U^{n+1} = U^n
+    \]
+    Requiere resolver un sistema lineal en cada paso temporal.
+\end{itemize}
+
+\section{Evaluación con parámetros dados}
+
+Se evaluarán las funciones implementadas anteriormente con los siguientes parámetros:
+\[
+\alpha = 1, \quad \Delta t = 0.001, \quad \Delta x = 0.05, \quad T = 0.1
+\]
+
+La condición inicial $f(x)$ utilizada es:
+\[
+f(x) =
+\begin{cases}
+4x & 0 \leq x < \tfrac{1}{4}, \\
+-2x + \tfrac{3}{2} & \tfrac{1}{4} \leq x < \tfrac{1}{2}, \\
+2x - \tfrac{1}{2} & \tfrac{1}{2} \leq x < \tfrac{3}{4}, \\
+-4x + 4 & \tfrac{3}{4} \leq x \leq 1.
+\end{cases}
+\]
+
 % \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.7\textwidth]{resultados/heat_explicit.png}
-%     \caption{Evolución de la temperatura mediante el método explícito.}
-%     \label{fig:heat_explicit}
+% \centering
+% \includegraphics[width=0.7\textwidth]{condicion_inicial.png}
+% \caption{Condición inicial $u(x,0) = f(x)$.}
 % \end{figure}
 
-\textbf{[Aquí se incluirá la figura una vez generada]}
+\section{Visualización y análisis de resultados}
 
-\subsection{Discusión}
-Comparando los métodos explícito e implícito se observa que\ldots
+Con los valores obtenidos en las simulaciones se construirá un GIF para visualizar
+cómo varía la solución a medida que evoluciona el tiempo. Se analizarán las diferencias entre los métodos explícito e implícito y se discutirá cómo el parámetro $r$ afecta la estabilidad y precisión de los resultados.
 
-\section{Ecuación de Transporte}
-\subsection{Formulación}
-La ecuación de transporte está dada por:
-\begin{equation}
-    \frac{\partial u}{\partial t} = a \frac{\partial u}{\partial x}, \quad
-    u(x,0) = \sin(\pi x)
-\end{equation}
+\newpage
 
-\subsection{Resultados y análisis}
-% Puedes insertar gráficos y explicaciones aquí
+\part{Ecuación de Transporte}
 
-\section{Conclusiones}
-En este trabajo se implementaron métodos numéricos para resolver ecuaciones diferenciales parciales. 
-Se concluye que\ldots
+\section{Formulación matemática - Derivación de los métodos explícito e implícito}
+
+En esta sección vamos a aplicar el mismo procedimiento que en la parte 1 - ecuación del calor, pero ahora sobre la ecuación de transporte con velocidad constante $\alpha$:
+\[
+\frac{\partial u}{\partial t} + \alpha \frac{\partial u}{\partial x} = 0,
+\quad x \in (0,1), \quad t > 0
+\]
+
+con condición inicial sugerida:
+\[
+u(x,0) = f(x) = \sin(\pi x).
+\]
+
+Aquí $u(x,t)$ describe cómo una cantidad se desplaza en el tiempo a lo largo del eje $x$ con velocidad $\alpha$. \\
+
+Al igual que antes, trabajamos con condiciones de frontera de Dirichlet homogéneas:
+\[
+u(0,t)=u(1,t)=0
+\]
+
+\subsection{Discretización: malla de espacio y tiempo}
+
+La malla espacial y temporal es exactamente la misma que usamos en la ecuación del calor:
+
+\begin{itemize}
+    \item Puntos espaciales:
+    \[
+    x_j = j \Delta x, \quad j = 0,1,\dots,N, \quad \Delta x = \tfrac{1}{N}.
+    \]
+
+    \item Puntos temporales:
+    \[
+    t_n = n\Delta t, \quad n = 0,1,2,\dots,M.
+    \]
+\end{itemize}
+
+Denotamos la aproximación como $u_j^n \approx u(x_j,t_n)$.
+
+\subsection{Aproximación de las derivadas con diferencias finitas}
+
+Como en la ecuación del calor, aproximamos las derivadas con fórmulas en diferencias finitas.  
+La diferencia es que aquí sólo necesitamos la derivada espacial de primer orden.
+
+\begin{itemize}
+    \item Derivada temporal: diferencia hacia adelante
+    \[
+    \frac{\partial u}{\partial t}(x_j,t_n) \approx \frac{u_j^{n+1}-u_j^n}{\Delta t}.
+    \]
+
+    \item Derivada espacial: diferencia hacia atrás (esquema \emph{upwind} para $\alpha>0$)
+    \[
+    \frac{\partial u}{\partial x}(x_j,t_n) \approx \frac{u_j^n - u_{j-1}^n}{\Delta x}.
+    \]
+\end{itemize}
+
+Definimos el número de Courant:
+\[
+r = \frac{\alpha \Delta t}{\Delta x}.
+\]
+
+\subsection{Método explícito}
+
+Partimos de la ecuación discretizada:
+\[
+\frac{u_j^{n+1}-u_j^n}{\Delta t} + \alpha \frac{u_j^n - u_{j-1}^n}{\Delta x} = 0.
+\]
+
+\subsection*{Definición de $r$:}
+Sustituimos $r = \tfrac{\alpha \Delta t}{\Delta x}$:
+\[
+u_j^{n+1}-u_j^n = -r\,(u_j^n - u_{j-1}^n).
+\]
+
+\paragraph{Paso 1. Expandir}  
+\[
+u_j^{n+1} = u_j^n - r\,u_j^n + r\,u_{j-1}^n.
+\]
+
+\paragraph{Paso 2. Agrupar términos}  
+\[
+u_j^{n+1} = (1-r)\,u_j^n + r\,u_{j-1}^n.
+\]
+
+\paragraph{Esquema explícito}  
+\[
+\boxed{u_j^{\,n+1} = (1-r)\,u_j^n + r\,u_{j-1}^n}
+\]
+
+\subsection*{Condición de estabilidad:}
+El esquema explícito es estable si y sólo si:
+\[
+0 \leq r \leq 1.
+\]
+
+\subsection*{Interpretación:}
+El nuevo valor en $j$ es un promedio ponderado entre el valor anterior en $j$ y el vecino izquierdo $j-1$.  
+Esto refleja el transporte de la información en la dirección de la velocidad $\alpha$.
+
+\subsection{Método implícito}
+
+Ahora evaluamos la derivada espacial en el tiempo $n+1$:
+\[
+\frac{u_j^{n+1}-u_j^n}{\Delta t} + \alpha \frac{u_j^{n+1} - u_{j-1}^{n+1}}{\Delta x} = 0.
+\]
+
+\paragraph{Paso 1. Sustituir $r$}  
+\[
+u_j^{n+1} - u_j^n = -r\,(u_j^{n+1} - u_{j-1}^{n+1}).
+\]
+
+\paragraph{Paso 2. Reorganizar}  
+\[
+(1-r)\,u_j^{n+1} + r\,u_{j-1}^{n+1} = u_j^n.
+\]
+
+\paragraph{Esquema implícito}  
+\[
+\boxed{(1-r)\,u_j^{\,n+1} + r\,u_{j-1}^{\,n+1} = u_j^n}
+\]
+
+\subsection*{Interpretación:}
+En este caso, los valores de $u^{n+1}$ aparecen acoplados entre sí.  
+Esto obliga a resolver un sistema lineal en cada paso temporal.  
+La ventaja es que el método implícito es \textbf{incondicionalmente estable}, sin restricciones sobre $r$.
+
+\subsection{Resumen comparativo}
+
+\begin{itemize}
+    \item \textbf{Explícito (upwind):}  
+    \[
+    u_j^{n+1} = (1-r)\,u_j^n + r\,u_{j-1}^n,
+    \]
+    sencillo de implementar, pero estable sólo si $0 \leq r \leq 1$.
+
+    \item \textbf{Implícito (upwind implícito):}  
+    \[
+    (1-r)\,u_j^{n+1} + r\,u_{j-1}^{n+1} = u_j^n,
+    \]
+    más costoso computacionalmente, porque requiere resolver un sistema lineal en cada paso, pero estable para cualquier $r$.
+\end{itemize}
+
+\section{Sistemas lineales y forma matricial}
+
+\subsection{Recordemos el dominio}
+Como ya vimos en la parte 1, trabajamos con $N+1$ puntos espaciales.  
+Los valores desconocidos corresponden a los nodos internos $j=1,\dots,N-1$. En cada instante de tiempo usamos un vector de tamaño $N-1$.
+
+\subsection{Método explícito como sistema lineal}
+
+El método explícito se escribe como:
+\[
+u_j^{n+1} = (1-r)\,u_j^n + r\,u_{j-1}^n.
+\]
+
+\subsection*{Forma matricial:}
+\[
+U^{n+1} = B\,U^n,
+\]
+con
+\[
+U^n = 
+\begin{bmatrix}
+u_1^n \\[4pt] u_2^n \\[4pt] \vdots \\[4pt] u_{N-2}^n \\[4pt] u_{N-1}^n
+\end{bmatrix}.
+\] \\
+
+La matriz $B$ en este caso es bidiagonal:
+\[
+B = 
+\begin{bmatrix}
+1-r & 0   & 0   & \cdots & 0 \\[4pt]
+r   & 1-r & 0   & \cdots & 0 \\[4pt]
+0   & r   & 1-r & \cdots & 0 \\[4pt]
+\vdots & \vdots & \vdots & \ddots & 0 \\[4pt]
+0   & 0   & 0   & r      & 1-r
+\end{bmatrix}.
+\]
+
+\subsection*{Interpretación:}
+La evolución temporal se obtiene simplemente multiplicando $U^n$ por $B$. Cada fila refleja la dependencia entre un nodo y su vecino izquierdo.
+
+\subsection{Método implícito como sistema lineal}
+
+El método implícito es:
+\[
+(1-r)\,u_j^{n+1} + r\,u_{j-1}^{n+1} = u_j^n.
+\]
+
+\subsection*{Forma matricial:}
+\[
+A\,U^{n+1} = U^n,
+\]
+donde
+\[
+A = 
+\begin{bmatrix}
+1-r & 0   & 0   & \cdots & 0 \\[4pt]
+r   & 1-r & 0   & \cdots & 0 \\[4pt]
+0   & r   & 1-r & \cdots & 0 \\[4pt]
+\vdots & \vdots & \vdots & \ddots & 0 \\[4pt]
+0   & 0   & 0   & r      & 1-r
+\end{bmatrix}.
+\]
+
+\subsection*{Interpretación:}
+Aquí $U^{n+1}$ está en ambos lados de la ecuación, por lo que en cada paso debemos resolver:
+\[
+U^{n+1} = A^{-1} U^n.
+\]
+
+\subsection{Resumen comparativo}
+
+\begin{itemize}
+    \item \textbf{Explícito:}  
+    \[
+    U^{n+1} = B\,U^n,
+    \]
+    evolución mediante una multiplicación matricial (bidiagonal).
+
+    \item \textbf{Implícito:}  
+    \[
+    A\,U^{n+1} = U^n,
+    \]
+    requiere resolver un sistema lineal en cada paso temporal (también con matriz bidiagonal).
+\end{itemize}
+
+\section{Evaluación con parámetros dados}
+
+Se evaluarán las funciones implementadas anteriormente con los siguientes parámetros:
+\[
+\alpha = 1, \quad \Delta t = 0.001, \quad \Delta x = 0.05, \quad T = 0.1
+\]
+
+La condición inicial $f(x)$ utilizada es:
+\[
+f(x) =
+\begin{cases}
+4x & 0 \leq x < \tfrac{1}{4}, \\
+-2x + \tfrac{3}{2} & \tfrac{1}{4} \leq x < \tfrac{1}{2}, \\
+2x - \tfrac{1}{2} & \tfrac{1}{2} \leq x < \tfrac{3}{4}, \\
+-4x + 4 & \tfrac{3}{4} \leq x \leq 1.
+\end{cases}
+\]
+
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.7\textwidth]{condicion_inicial.png}
+% \caption{Condición inicial $u(x,0) = f(x)$.}
+% \end{figure}
+
+\section{Visualización y análisis de resultados}
+
+Con los valores obtenidos en las simulaciones se construirá un GIF para visualizar
+cómo varía la solución a medida que evoluciona el tiempo. Se analizarán las diferencias entre los métodos explícito e implícito y se discutirá cómo el parámetro $r$ afecta la estabilidad y precisión de los resultados.
 
 \end{document}
