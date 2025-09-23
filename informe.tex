@@ -316,18 +316,165 @@ Esto se puede hacer en Python con:
 \[
 \texttt{U\_next = numpy.linalg.solve(A, U)}
 \]
-\subsection{Resultados}
-En la Figura~\ref{fig:heat_explicit} se observa la evolución temporal de la temperatura usando el método explícito.
 
-% Comentado temporalmente hasta generar la imagen
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.7\textwidth]{resultados/heat_explicit.png}
-%     \caption{Evolución de la temperatura mediante el método explícito.}
-%     \label{fig:heat_explicit}
-% \end{figure}
+\section{Ecuación de transporte}
 
-\textbf{[Aquí se incluirá la figura una vez generada]}
+La ecuación es:
+\[
+\frac{\partial u}{\partial t} = a\,\frac{\partial u}{\partial x}, 
+\quad x \in (0,1), \quad t > 0.
+\]
+
+\paragraph{1. Discretización del dominio}
+
+Dividimos el espacio y el tiempo en pasos uniformes:
+\begin{itemize}
+    \item Posiciones: \(x_j = j\Delta x\), con \(j = 0,1,\dots,N\), donde \(\Delta x = \frac{1}{N}\).
+    \item Tiempos: \(t_n = n\Delta t\), con \(n = 0,1,\dots,M\), donde \(M\Delta t = T\).
+\end{itemize}
+
+Como antes, usaremos la notación \(u_j^n \approx u(x_j, t_n)\).
+
+\paragraph{Derivada temporal (forward):}
+
+\[
+\frac{\partial u}{\partial t}(x_j, t_n) \approx \frac{u_j^{n+1}-u_j^n}{\Delta t}.
+\]
+
+\paragraph{Derivada espacial:}  
+Hay varias formas de aproximarla. Para la versión más simple usamos una \textbf{diferencia hacia atrás}:
+\[
+\frac{\partial u}{\partial x}(x_j, t_n) \approx \frac{u_j^n - u_{j-1}^n}{\Delta x}.
+\]
+
+Esto significa que el valor en \(j\) depende de él mismo y de su vecino de la izquierda.
+
+Sustituimos las aproximaciones en la ecuación de transporte:
+\[
+\frac{u_j^{n+1}-u_j^n}{\Delta t} = a\,\frac{u_j^n - u_{j-1}^n}{\Delta x}.
+\]
+
+\paragraph{Definimos r nuevamente:}
+\[
+r := \frac{a\,\Delta t}{\Delta x}.
+\]
+Reemplazando \(r\) en la ecuación, queda:
+\[
+u_j^{n+1}-u_j^n = r\,(u_j^n - u_{j-1}^n).
+\]
+
+\paragraph{Método explícito}
+
+Aislamos \(u_j^{n+1}\) para obtener la fórmula explícita:
+\[
+u_j^{n+1} = u_j^n + r\,(u_j^n - u_{j-1}^n).
+\]
+
+Si expandimos el paréntesis:
+\[
+u_j^{n+1} = (1+r)u_j^n - r\,u_{j-1}^n.
+\]
+
+\paragraph{Interpretación:}
+El valor en la posición \(j\) y tiempo \(n+1\) depende del valor actual \(u_j^n\) y del vecino a la izquierda \(u_{j-1}^n\).  
+Es como si la información se fuera "moviendo" hacia la derecha con velocidad \(a\).
+
+\paragraph{Condición de estabilidad:}  
+Para que la solución sea estable, el r debe cumplir:
+\[
+r = \frac{a\,\Delta t}{\Delta x} \leq 1.
+\]
+Si no se cumple, la simulación genera oscilaciones y se vuelve inestable.
+
+\paragraph{Método implícito}
+
+Ahora evaluamos la derivada espacial en el \textbf{tiempo futuro} \(n+1\).  
+Partimos de:
+\[
+\frac{u_j^{n+1}-u_j^n}{\Delta t} = a\,\frac{u_j^{n+1} - u_{j-1}^{n+1}}{\Delta x}.
+\]
+
+Multiplicamos por \(\Delta t\) y reemplazamos \(r = \frac{a\,\Delta t}{\Delta x}\):
+\[
+u_j^{n+1}-u_j^n = r\,(u_j^{n+1}-u_{j-1}^{n+1}).
+\]
+
+Reordenamos para dejar todos los términos con \(u^{n+1}\) a la izquierda:
+\[
+u_j^{n+1} - r\,u_j^{n+1} + r\,u_{j-1}^{n+1} = u_j^n.
+\]
+
+Simplificamos términos semejantes:
+\[
+(1-r)u_j^{n+1} + r\,u_{j-1}^{n+1} = u_j^n.
+\]
+\subsection{Sistemas Lineales y Forma Matricial}
+\subsubsection*{1. Método implícito como sistema lineal}
+Agrupamos todas las incógnitas \(u_1^{n+1}, \dots, u_{N-1}^{n+1}\) en un vector:
+\[
+U^{n+1} = 
+\begin{bmatrix}
+u_1^{n+1}\\
+u_2^{n+1}\\
+\vdots\\
+u_{N-1}^{n+1}
+\end{bmatrix}.
+\]
+
+Así, la ecuación implícita se puede escribir como un sistema lineal:
+\[
+A\,U^{n+1} = U^n,
+\]
+donde \(A\) es una matriz \textbf{triangular inferior}:
+\[
+A =
+\begin{bmatrix}
+1-r & 0   & 0   & \cdots & 0 \\[4pt]
+c   & 1-r & 0   & \cdots & 0 \\[4pt]
+0   & c   & 1-r & \cdots & 0 \\[4pt]
+\vdots & \vdots & \vdots & \ddots & 0 \\[4pt]
+0   & 0   & 0   & c      & 1-r
+\end{bmatrix}.
+\]
+
+En cada paso temporal hay que resolver este sistema para encontrar \(U^{n+1}\).  
+\subsubsection*{2. Método explícito como sistema lineal}
+
+El método explícito tiene esta fórmula final:
+
+\[
+u_j^{n+1} = (1+r)u_j^n - r\,u_{j-1}^n.
+\]
+
+Esto se puede escribir como un producto matricial:
+\[
+U^{n+1} = B\,U^n,
+\]
+donde:
+\[
+U^n = 
+\begin{bmatrix}
+u_1^n \\ u_2^n \\ \vdots \\ u_{N-2}^n \\ u_{N-1}^n
+\end{bmatrix}
+\]
+es el vector con los valores de los nodos internos en el tiempo \(t_n\).
+
+La matriz \(B\) tiene forma tridiagonal:
+\[
+B = 
+\begin{bmatrix}
+1-2r & r     & 0     & \cdots & 0 \\[4pt]
+r     & 1-2r & r     & \cdots & 0 \\[4pt]
+0     & r     & 1-2r & \cdots & 0 \\[4pt]
+\vdots& \vdots& \vdots& \ddots & r \\[4pt]
+0     & 0     & 0     & r      & 1-2r
+\end{bmatrix}.
+\]
+
+\paragraph{Interpretación:}  
+Esto significa que para pasar del tiempo \(t_n\) al tiempo \(t_{n+1}\), basta con multiplicar el vector actual \(U^n\) por la matriz \(B\).  
+---
+
 
 \subsection{Discusión}
 Comparando los métodos explícito e implícito se observa que\ldots
