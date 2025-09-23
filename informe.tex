@@ -1,0 +1,285 @@
+\documentclass[12pt,a4paper]{article}
+
+% ======== PAQUETES ========
+\usepackage[spanish]{babel}     % Idioma español
+\usepackage[utf8]{inputenc}     % Acentos
+\usepackage[T1]{fontenc}        % Caracteres correctos
+\usepackage{amsmath, amssymb}   % Matemática avanzada
+\usepackage{graphicx}           % Insertar imágenes
+\usepackage{float}              % Control de posición de figuras
+\usepackage{hyperref}           % Hipervínculos
+\usepackage{geometry}           % Márgenes
+\usepackage{listings}           % Código fuente
+\usepackage{xcolor}             % Colores para código
+\usepackage{caption}            % Mejoras en captions
+\usepackage{subcaption}         % Subfiguras
+\usepackage{booktabs}           % Tablas bonitas
+
+% Configuración de márgenes
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% Configuración del código fuente
+\lstset{
+    language=Python,
+    backgroundcolor=\color{black!5},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    frame=single,
+    breaklines=true,
+    tabsize=4
+}
+
+% Datos de la portada
+\title{\textbf{Métodos Computacionales - Trabajo Práctico 1}\\
+Resoluciones Numéricas de Ecuaciones Diferenciales}
+\author{
+    Mariño Martina, Martinez Kiara\\ 
+    Universidad Torcuato Di Tella
+}
+\date{\today}
+
+% ======== DOCUMENTO ========
+\begin{document}
+
+% ======== PORTADA ========
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+% ======== ÍNDICE ========
+\tableofcontents
+\newpage
+
+% ======== SECCIONES ========
+
+\section{Ecuación del Calor}
+\subsection{Formulación matemática - Derivación de los métodos explícito e implícito}
+
+En esta sección vamos a ver cómo se llega a las fórmulas de los métodos explícito e implícito para resolver la ecuación del calor usando diferencias finitas. La idea es empezar de la ecuación original, discretizarla, y después aproximar las derivadas.
+
+\textbf{La ecuación que queremos resolver}
+
+La ecuación del calor en una dimensión es:
+\[
+\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2},
+\quad x \in (0,1), \quad t>0
+\]
+
+Donde:
+\begin{itemize}
+    \item $u(x,t)$ representa la temperatura en el punto $x$ y tiempo $t$.
+    \item $\alpha > 0$ es la constante de difusión térmica.
+\end{itemize}
+
+Además, tenemos condiciones de frontera de Dirichlet:
+\[
+u(0,t) = 0, \quad u(1,t) = 0
+\]
+y una condición inicial que nos da la distribución de temperatura al inicio:
+\[
+u(x,0) = f(x).
+\]
+
+En palabras, se trata de una barra de longitud 1 donde los extremos se mantienen a temperatura cero. Sabemos cómo estaba la temperatura al comienzo y queremos ver cómo cambia con el tiempo.
+
+\textbf{Discretización: malla de espacio y tiempo}
+
+Para resolver el problema de forma numérica dividimos el espacio y el tiempo en puntos separados por pasos fijos:
+\begin{itemize}
+    \item Dividimos el intervalo espacial $[0,1]$ en $N$ puntos con separación $\Delta x$. Así, las posiciones son:
+    \[
+    x_j = j\Delta x, \quad j = 0,1,\dots,N
+    \]
+    donde $\Delta x = \frac{1}{N}$.
+    \item El tiempo se divide en pasos de tamaño $\Delta t$. Los instantes de tiempo quedan como:
+    \[
+    t_n = n\Delta t, \quad n = 0,1,2,\dots,M
+    \]
+    con $M\Delta t = T$ siendo el tiempo final de simulación.
+\end{itemize}
+
+Notación: llamamos $u_j^n$ a la aproximación numérica de $u(x_j,t_n)$.  
+Los nodos de frontera son $j=0$ y $j=N$ (donde ya conocemos $u$ gracias a las condiciones de borde). Los nodos internos son $j=1,\dots,N-1$, que son los que vamos a actualizar.
+
+\textbf{Aproximación de las derivadas con diferencias finitas}
+
+Vamos a reemplazar las derivadas por aproximaciones usando diferencias finitas:
+\begin{itemize}
+    \item Para la derivada temporal usamos una \textbf{diferencia hacia adelante}:
+    \[
+    \frac{\partial u}{\partial t}(x_j,t_n) \approx \frac{u_j^{n+1}-u_j^n}{\Delta t}.
+    \]
+    \item Para la segunda derivada espacial usamos \textbf{diferencias centradas}:
+    \[
+    \frac{\partial^2 u}{\partial x^2}(x_j,t_n) \approx \frac{u_{j+1}^n - 2u_j^n + u_{j-1}^n}{(\Delta x)^2}.
+    \]
+\end{itemize}
+
+Esto introduce un error, pero mientras $\Delta x$ y $\Delta t$ sean pequeños, la aproximación es bastante buena.
+
+\textbf{Sustitución en la ecuación original --- Derivación explícito}
+
+Si reemplazamos las aproximaciones en la ecuación del calor, nos queda:
+\[
+\frac{u_j^{n+1}-u_j^n}{\Delta t} = \alpha \frac{u_{j+1}^n - 2u_j^n + u_{j-1}^n}{(\Delta x)^2}.
+\]
+
+Definimos un parámetro muy útil llamado $r$:
+\[
+r = \frac{\alpha \Delta t}{(\Delta x)^2}.
+\]
+Este parámetro combina la constante física \(\alpha\) con el paso de tiempo \(\Delta t\) y el paso espacial \(\Delta x\). 
+
+Reemplazando esta definición en la ecuación anterior:
+\[
+u_j^{\,n+1}-u_j^{\,n} = r\big(u_{j+1}^{\,n}-2u_j^{\,n}+u_{j-1}^{\,n}\big).
+\]
+
+El siguiente objetivo es aislar \(u_j^{\,n+1}\) para que quede explícito. Sumamos \(u_j^{\,n}\) en ambos lados:
+\[
+u_j^{\,n+1} = u_j^{\,n} + r\big(u_{j+1}^{\,n}-2u_j^{\,n}+u_{j-1}^{\,n}\big).
+\]
+
+Expandimos el paréntesis:
+\[
+u_j^{\,n+1} = u_j^{\,n} + r\,u_{j+1}^{\,n} - 2r\,u_j^{\,n} + r\,u_{j-1}^{\,n}.
+\]
+
+Agrupando términos similares, en especial los que dependen de \(u_j^n\):
+\[
+u_j^{\,n+1} = (1 - 2r)u_j^{\,n} + r\,u_{j-1}^{\,n} + r\,u_{j+1}^{\,n}.
+\]
+\newline
+Esta última ecuación muestra que el nuevo valor de temperatura en la posición \(j\) y tiempo \(n+1\) se calcula como una combinación lineal de:
+\begin{itemize}
+    \item El valor previo en la misma posición, \(u_j^n\), ponderado por \((1-2r)\).
+    \item El vecino de la izquierda, \(u_{j-1}^n\), ponderado por \(r\).
+    \item El vecino de la derecha, \(u_{j+1}^n\), también ponderado por \(r\).
+\end{itemize}
+
+
+Así, nos queda el esquema \textbf{explícito} completo:
+\[
+\boxed{u_j^{\,n+1} = (1 - 2r)u_j^{\,n} + r\,u_{j-1}^{\,n} + r\,u_{j+1}^{\,n}},
+\]
+
+
+\paragraph{Condición de estabilidad:}  
+Este método solo funciona bien si se cumple:
+\[
+r = \frac{\alpha \Delta t}{(\Delta x)^2} \leq \frac{1}{2}.
+\]
+Si no se cumple, la solución explota y empieza a oscilar de manera irreal.
+
+\paragraph{Interpretación:}  
+La temperatura en $j$ tiende a ``suavizarse'' dependiendo de cómo están los vecinos $j-1$ y $j+1$. Es como un promedio que se va corrigiendo paso a paso.
+
+\textbf{Derivación Método implícito}
+
+En este método, la segunda derivada espacial se evalúa usando valores en el tiempo $n+1$, o sea, el nuevo tiempo. Esto da la ecuación:
+\[
+\frac{u_j^{n+1}-u_j^n}{\Delta t} = \alpha \frac{u_{j+1}^{n+1} - 2u_j^{n+1} + u_{j-1}^{n+1}}{(\Delta x)^2}.
+\]
+
+Reordenando un poco:
+\[
+u_j^{n+1} - r\big(u_{j+1}^{n+1} - 2u_j^{n+1} + u_{j-1}^{n+1}\big) = u_j^n.
+\]
+
+Esto es una ecuación donde los $u^{n+1}$ están mezclados, así que no se puede actualizar punto por punto como en el explícito. Hay que resolver un sistema lineal en cada paso de tiempo.
+
+\paragraph{Ventajas y desventajas:}
+\begin{itemize}
+    \item Ventaja: es \textbf{incondicionalmente estable}, no importa el valor de $r$.
+    \item Desventaja: es más costoso computacionalmente porque hay que resolver un sistema lineal en cada paso.
+\end{itemize}
+
+\subsubsection{7. Forma matricial: sistema tridiagonal}
+
+Para organizar mejor el método implícito, agrupamos todas las incógnitas internas en un vector:
+\[
+U^{n+1} = \begin{bmatrix} u_1^{n+1} \\ u_2^{n+1} \\ \vdots \\ u_{N-1}^{n+1} \end{bmatrix}.
+\]
+
+Así, la ecuación se puede escribir como:
+\[
+A\,U^{n+1} = U^n,
+\]
+donde $A$ es una matriz tridiagonal de tamaño $(N-1)\times(N-1)$ con esta forma:
+\[
+A =
+\begin{bmatrix}
+1+2r & -r    & 0      & \cdots & 0 \\
+-r    & 1+2r & -r     & \cdots & 0 \\
+0     & -r    & 1+2r  & \cdots & 0 \\
+\vdots& \vdots& \vdots & \ddots & -r \\
+0     & 0     & 0      & -r     & 1+2r
+\end{bmatrix}.
+\]
+
+En cada paso temporal, el vector $U^n$ se conoce y tenemos que resolver $A\,U^{n+1}=U^n$ para encontrar el siguiente estado. Esto se puede hacer con funciones como \texttt{numpy.linalg.solve} o usando el algoritmo de Thomas, que es más rápido para tridiagonales.
+
+\paragraph{Resumen:}  
+\begin{itemize}
+    \item El método explícito es más simple pero exige $r \leq 0.5$ para no explotar.
+    \item El método implícito es más robusto, no tiene restricción en $r$, pero es más pesado porque hay que resolver un sistema en cada paso.
+\end{itemize}
+
+
+\subsection{Implementación en Python}
+El siguiente fragmento muestra parte del código implementado:
+
+\begin{lstlisting}
+import numpy as np
+
+def metodo_explicito(alpha, f, dx, dt, T):
+    N = int(1/dx) + 1
+    M = int(T/dt) + 1
+    u = np.zeros((M, N))
+    x = np.linspace(0, 1, N)
+    u[0, :] = f(x)
+
+    r = alpha * dt / dx**2
+    for n in range(0, M-1):
+        for j in range(1, N-1):
+            u[n+1, j] = u[n, j] + r*(u[n, j+1] - 2*u[n, j] + u[n, j-1])
+    return u, x
+\end{lstlisting}
+
+\subsection{Resultados}
+En la Figura~\ref{fig:heat_explicit} se observa la evolución temporal de la temperatura usando el método explícito.
+
+% Comentado temporalmente hasta generar la imagen
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{resultados/heat_explicit.png}
+%     \caption{Evolución de la temperatura mediante el método explícito.}
+%     \label{fig:heat_explicit}
+% \end{figure}
+
+\textbf{[Aquí se incluirá la figura una vez generada]}
+
+\subsection{Discusión}
+Comparando los métodos explícito e implícito se observa que\ldots
+
+\section{Ecuación de Transporte}
+\subsection{Formulación}
+La ecuación de transporte está dada por:
+\begin{equation}
+    \frac{\partial u}{\partial t} = a \frac{\partial u}{\partial x}, \quad
+    u(x,0) = \sin(\pi x)
+\end{equation}
+
+\subsection{Resultados y análisis}
+% Puedes insertar gráficos y explicaciones aquí
+
+\section{Conclusiones}
+En este trabajo se implementaron métodos numéricos para resolver ecuaciones diferenciales parciales. 
+Se concluye que\ldots
+
+\end{document}

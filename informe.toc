@@ -1,0 +1,15 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Ecuación del Calor}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Formulación matemática - Derivación de los métodos explícito e implícito}{3}{subsection.1.1}%
+\contentsline {paragraph}{Condición de estabilidad:}{5}{section*.2}%
+\contentsline {paragraph}{Interpretación:}{5}{section*.3}%
+\contentsline {paragraph}{Ventajas y desventajas:}{5}{section*.4}%
+\contentsline {subsubsection}{\numberline {1.1.1}7. Forma matricial: sistema tridiagonal}{5}{subsubsection.1.1.1}%
+\contentsline {paragraph}{Resumen:}{6}{section*.5}%
+\contentsline {subsection}{\numberline {1.2}Implementación en Python}{6}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Resultados}{6}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Discusión}{6}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Ecuación de Transporte}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Formulación}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Resultados y análisis}{6}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Conclusiones}{6}{section.3}%
