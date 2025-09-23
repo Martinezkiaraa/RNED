@@ -232,7 +232,90 @@ De forma más explícita:
 Para cada nodo interior \(j\) la ecuación relaciona al nuevo valor \(u_j^{\,n+1}\) con sus vecinos en el mismo nuevo tiempo \(n+1\). No hay una fórmula directa para \(u_j^{\,n+1}\) en términos solo de valores en \(n\); por eso hay que resolver un sistema.
 
 \subsection{Sistemas lineales y forma matricial}
+\paragraph{Recordemos el dominio:}
+Tenemos \(N+1\) puntos en el espacio, numerados de \(j=0\) a \(j=N\).  
+Los extremos (\(j=0\) y \(j=N\)) son conocidos por las condiciones de frontera \(u(0,t)=u(1,t)=0\).  
+Los valores desconocidos están en los puntos internos \(j=1,2,\dots,N-1\).  
+Eso significa que en cada instante de tiempo tenemos que trabajar con un vector de tamaño \(N-1\).
 
+---
+
+\subsubsection*{1. Método explícito como sistema lineal}
+
+El método explícito tiene esta fórmula final:
+\[
+u_j^{n+1} = (1-2r)u_j^n + r\,u_{j-1}^n + r\,u_{j+1}^n, 
+\quad j = 1, 2, \dots, N-1.
+\]
+
+Esto se puede escribir como un producto matricial:
+\[
+U^{n+1} = B\,U^n,
+\]
+donde:
+\[
+U^n = 
+\begin{bmatrix}
+u_1^n \\ u_2^n \\ \vdots \\ u_{N-2}^n \\ u_{N-1}^n
+\end{bmatrix}
+\]
+es el vector con los valores de los nodos internos en el tiempo \(t_n\).
+
+La matriz \(B\) tiene forma tridiagonal:
+\[
+B = 
+\begin{bmatrix}
+1-2r & r     & 0     & \cdots & 0 \\[4pt]
+r     & 1-2r & r     & \cdots & 0 \\[4pt]
+0     & r     & 1-2r & \cdots & 0 \\[4pt]
+\vdots& \vdots& \vdots& \ddots & r \\[4pt]
+0     & 0     & 0     & r      & 1-2r
+\end{bmatrix}.
+\]
+
+\paragraph{Interpretación:}  
+Esto significa que para pasar del tiempo \(t_n\) al tiempo \(t_{n+1}\), basta con multiplicar el vector actual \(U^n\) por la matriz \(B\).  
+---
+
+\subsubsection*{2. Método implícito como sistema lineal}
+
+En el método implícito, la ecuación final para cada nodo es:
+\[
+-r\,u_{j-1}^{n+1} + (1+2r)\,u_j^{n+1} - r\,u_{j+1}^{n+1} = u_j^n,
+\quad j = 1, 2, \dots, N-1.
+\]
+
+Esto se puede ver como un sistema lineal:
+\[
+A\,U^{n+1} = U^n,
+\]
+donde \(U^{n+1}\) es el vector de incógnitas en el nuevo tiempo, igual que antes:
+\[
+U^{n+1} = 
+\begin{bmatrix}
+u_1^{n+1} \\ u_2^{n+1} \\ \vdots \\ u_{N-2}^{n+1} \\ u_{N-1}^{n+1}
+\end{bmatrix}.
+\]
+
+La matriz \(A\) también es tridiagonal, pero con valores diferentes:
+\[
+A = 
+\begin{bmatrix}
+1+2r & -r    & 0     & \cdots & 0 \\[4pt]
+-r    & 1+2r & -r    & \cdots & 0 \\[4pt]
+0     & -r    & 1+2r & \cdots & 0 \\[4pt]
+\vdots& \vdots& \vdots& \ddots & -r \\[4pt]
+0     & 0     & 0     & -r     & 1+2r
+\end{bmatrix}.
+\]
+
+\paragraph{Interpretación:}  
+En este caso, no podemos calcular \(U^{n+1}\) directamente porque está "mezclado" dentro de la ecuación.  
+Para avanzar un paso en el tiempo hay que resolver el sistema lineal \(A\,U^{n+1}=U^n\).  
+Esto se puede hacer en Python con:
+\[
+\texttt{U\_next = numpy.linalg.solve(A, U)}
+\]
 \subsection{Resultados}
 En la Figura~\ref{fig:heat_explicit} se observa la evolución temporal de la temperatura usando el método explícito.
 
