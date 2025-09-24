@@ -435,16 +435,11 @@ La diferencia es que aquí sólo necesitamos la derivada espacial de primer orde
     \frac{\partial u}{\partial t}(x_j,t_n) \approx \frac{u_j^{n+1}-u_j^n}{\Delta t}.
     \]
 
-    \item Derivada espacial: diferencia hacia atrás (esquema \emph{upwind} para $\alpha>0$)
+    \item Derivada espacial: diferencia hacia atrás (esquema para $\alpha>0$)
     \[
     \frac{\partial u}{\partial x}(x_j,t_n) \approx \frac{u_j^n - u_{j-1}^n}{\Delta x}.
     \]
 \end{itemize}
-
-Definimos el número de Courant:
-\[
-r = \frac{\alpha \Delta t}{\Delta x}.
-\]
 
 \subsection{Método explícito}
 
@@ -514,13 +509,13 @@ La ventaja es que el método implícito es \textbf{incondicionalmente estable}, 
 \subsection{Resumen comparativo}
 
 \begin{itemize}
-    \item \textbf{Explícito (upwind):}  
+    \item \textbf{Explícito:}  
     \[
     u_j^{n+1} = (1-r)\,u_j^n + r\,u_{j-1}^n,
     \]
     sencillo de implementar, pero estable sólo si $0 \leq r \leq 1$.
 
-    \item \textbf{Implícito (upwind implícito):}  
+    \item \textbf{Implícito:}  
     \[
     (1-r)\,u_j^{n+1} + r\,u_{j-1}^{n+1} = u_j^n,
     \]
