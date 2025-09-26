@@ -238,13 +238,6 @@ En este caso cada valor $u_j^{\,n+1}$ está acoplado con sus vecinos en el mismo
 Por eso, no hay una fórmula directa: es necesario resolver un sistema lineal en cada paso.  
 La gran ventaja es que el método es \textbf{incondicionalmente estable}, sin restricciones sobre $r$.
 
-\subsection{Resumen comparativo}
-
-\begin{itemize}
-    \item \textbf{Explícito:} sencillo de implementar, no requiere resolver sistemas, pero exige la condición $r \leq \tfrac{1}{2}$.
-    \item \textbf{Implícito:} más costoso porque requiere resolver un sistema en cada paso, pero estable para cualquier $\Delta t$ y $\Delta x$.
-\end{itemize}
-
 \section{Sistemas lineales y forma matricial}
 
 \subsection{Recordemos el dominio}
@@ -332,12 +325,7 @@ Para avanzar un paso en el tiempo es necesario resolver el sistema lineal:
 A\,U^{n+1} = U^n.
 \] \\
 
-Esto se puede hacer en Python con:
-\[
-\texttt{U\_next = numpy.linalg.solve(A, U)}
-\]
-
-\subsection{Resumen comparativo}
+\paragraph{Resumen comparativo}
 
 \begin{itemize}
     \item \textbf{Explícito:}  
@@ -353,34 +341,82 @@ Esto se puede hacer en Python con:
     Requiere resolver un sistema lineal en cada paso temporal.
 \end{itemize}
 
-\section{Evaluación con parámetros dados}
+\section{Conclusiones - Ecuación del Calor}
 
-Se evaluarán las funciones implementadas anteriormente con los siguientes parámetros:
-\[
-\alpha = 1, \quad \Delta t = 0.001, \quad \Delta x = 0.05, \quad T = 0.1
-\]
+Los métodos implementados fueron evaluados con los parámetros $\alpha = 1$, $\Delta t = 0.001$, $\Delta x = 0.05$ y $T = 0.1$.
 
-La condición inicial $f(x)$ utilizada es:
-\[
-f(x) =
-\begin{cases}
-4x & 0 \leq x < \tfrac{1}{4}, \\
--2x + \tfrac{3}{2} & \tfrac{1}{4} \leq x < \tfrac{1}{2}, \\
-2x - \tfrac{1}{2} & \tfrac{1}{2} \leq x < \tfrac{3}{4}, \\
--4x + 4 & \tfrac{3}{4} \leq x \leq 1.
-\end{cases}
-\]
+\subsection{Análisis de resultados obtenidos}
 
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.7\textwidth]{condicion_inicial.png}
-% \caption{Condición inicial $u(x,0) = f(x)$.}
-% \end{figure}
+\paragraph{Condición inicial triangular: $f(x) = 1 - |2x - 1|$}
 
-\section{Visualización y análisis de resultados}
+Para esta condición inicial, ambos métodos produjeron resultados consistentes (ver Figura 1 del notebook - visualizaciones del método explícito e implícito):
 
-Con los valores obtenidos en las simulaciones se construirá un GIF para visualizar
-cómo varía la solución a medida que evoluciona el tiempo. Se analizarán las diferencias entre los métodos explícito e implícito y se discutirá cómo el parámetro $r$ afecta la estabilidad y precisión de los resultados.
+\begin{itemize}
+    \item \textbf{Método explícito:} La solución evoluciona suavemente desde el perfil triangular inicial hacia un estado más uniforme, con los valores extremos disminuyendo gradualmente. Esta evolución se puede observar en el GIF \texttt{U\_explicito1.gif} generado en el notebook.
+    \item \textbf{Método implícito:} Comportamiento similar al explícito, pero con ligeras diferencias en los valores numéricos. La evolución temporal se muestra en el GIF \texttt{U\_implicito1.gif}.
+\end{itemize}
+
+\textbf{Valores específicos en $t = 0$:}
+\begin{itemize}
+    \item $u(0.25, 0) = 0.5000$ (ambos métodos)
+    \item $u(0.50, 0) = 1.0000$ (ambos métodos) 
+    \item $u(0.75, 0) = 0.5000$ (ambos métodos)
+\end{itemize}
+
+\textbf{Valores específicos en $t = T = 0.1$:}
+\begin{itemize}
+    \item \textbf{Explícito:} $u(0.25, 0.1) = 0.2134$, $u(0.50, 0.1) = 0.3019$, $u(0.75, 0.1) = 0.2134$
+    \item \textbf{Implícito:} $u(0.25, 0.1) = 0.2155$, $u(0.50, 0.1) = 0.3048$, $u(0.75, 0.1) = 0.2155$
+\end{itemize}
+
+\textbf{Error absoluto entre métodos:}
+\begin{itemize}
+    \item Error máximo en $t = T$: $2.954 \times 10^{-3}$
+    \item Error medio en $t = T$: $1.778 \times 10^{-3}$
+\end{itemize}
+
+\paragraph{Condición inicial particionada}
+
+Para la función por tramos definida en los intervalos $[0, 0.25)$, $[0.25, 0.5)$, $[0.5, 0.75)$ y $[0.75, 1]$, se observó (ver Figura 2 del notebook - visualizaciones del método explícito e implícito):
+
+\begin{itemize}
+    \item \textbf{Método explícito:} La discontinuidad inicial se suaviza gradualmente, manteniendo la estructura general del perfil inicial. Esta evolución se puede observar en el GIF \texttt{U\_explicito1\_2.gif} generado en el notebook.
+    \item \textbf{Método implícito:} Comportamiento similar, con una evolución más suave de las discontinuidades. La evolución temporal se muestra en el GIF \texttt{U\_implicito1\_2.gif}.
+\end{itemize}
+
+\textbf{Valores específicos en $t = 0$:}
+\begin{itemize}
+    \item $u(0.25, 0) = 1.0000$ (ambos métodos)
+    \item $u(0.50, 0) = 0.5000$ (ambos métodos)
+    \item $u(0.75, 0) = 1.0000$ (ambos métodos)
+\end{itemize}
+
+\textbf{Valores específicos en $t = T = 0.1$:}
+\begin{itemize}
+    \item \textbf{Explícito:} $u(0.25, 0.1) = 0.2394$, $u(0.50, 0.1) = 0.3385$, $u(0.75, 0.1) = 0.2394$
+    \item \textbf{Implícito:} $u(0.25, 0.1) = 0.2417$, $u(0.50, 0.1) = 0.3417$, $u(0.75, 0.1) = 0.2417$
+\end{itemize}
+
+\textbf{Error absoluto entre métodos:}
+\begin{itemize}
+    \item Error máximo en $t = T$: $3.264 \times 10^{-3}$
+    \item Error medio en $t = T$: $2.004 \times 10^{-3}$
+\end{itemize}
+
+\paragraph{Estabilidad y parámetro $r$}
+
+Con los parámetros utilizados, el valor de $r = \frac{\alpha \Delta t}{(\Delta x)^2} = \frac{1 \times 0.001}{(0.05)^2} = 0.4$, que cumple la condición de estabilidad $r \leq 0.5$ para el método explícito. Esto explica la estabilidad observada en ambos casos.
+
+\paragraph{Comparación entre métodos}
+
+\begin{itemize}
+    \item \textbf{Precisión:} Ambos métodos producen resultados muy similares, con errores relativos del orden de $10^{-3}$.
+    \item \textbf{Comportamiento físico:} Ambos métodos capturan correctamente el fenómeno de difusión térmica, mostrando la tendencia natural hacia el equilibrio térmico.
+    \item \textbf{Estabilidad:} El método implícito es incondicionalmente estable, mientras que el explícito requiere $r \leq 0.5$.
+    \item \textbf{Consistencia:} En $t=0$ ambos métodos coinciden perfectamente con la condición inicial, confirmando la correcta implementación.
+    \item \textbf{Evolución temporal:} A medida que avanza el tiempo, las curvas siguen siendo casi idénticas, validando la consistencia de ambos esquemas.
+\end{itemize}
+
 
 \newpage
 
@@ -625,15 +661,11 @@ f(x) =
 \end{cases}
 \]
 
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.7\textwidth]{condicion_inicial.png}
-% \caption{Condición inicial $u(x,0) = f(x)$.}
-% \end{figure}
-
 \section{Visualización y análisis de resultados}
 
 Con los valores obtenidos en las simulaciones se construirá un GIF para visualizar
 cómo varía la solución a medida que evoluciona el tiempo. Se analizarán las diferencias entre los métodos explícito e implícito y se discutirá cómo el parámetro $r$ afecta la estabilidad y precisión de los resultados.
+
+\section{Conclusiones - Ecuación de Transporte}
 
 \end{document}
