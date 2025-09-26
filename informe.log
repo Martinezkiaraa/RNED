@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.9.23)  24 SEP 2025 16:19
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.5.16)  24 SEP 2025 16:47
+>>>>>>> d1d0beeba2b4fd8c26edb932c9a375b2a7451755
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -461,7 +465,13 @@ LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 50.
 LaTeX Font Info:    ... okay on input line 50.
 LaTeX Info: Redefining \. on input line 50.
 LaTeX Info: Redefining \% on input line 50.
+<<<<<<< HEAD
  (C:\Program Files\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+=======
+
+(C:\Users\casa\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mki
+i
+>>>>>>> d1d0beeba2b4fd8c26edb932c9a375b2a7451755
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count318
 \scratchdimen=\dimen191
@@ -483,8 +493,12 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package hyperref Info: Link coloring OFF on input line 50.
+<<<<<<< HEAD
  (informe.out)
 (informe.out)
+=======
+ (informe.out) (informe.out)
+>>>>>>> d1d0beeba2b4fd8c26edb932c9a375b2a7451755
 \@outlinefile=\write3
 \openout3 = `informe.out'.
 
@@ -591,9 +605,13 @@ pue-de ob-ser-var en el GIF \T1/cmtt/m/n/12 U_explicito1_2.gif
 
 
 [8]
+<<<<<<< HEAD
 
 [9]
 Underfull \hbox (badness 10000) in paragraph at lines 438--439
+=======
+Underfull \hbox (badness 10000) in paragraph at lines 435--436
+>>>>>>> d1d0beeba2b4fd8c26edb932c9a375b2a7451755
 
  []
 
@@ -601,8 +619,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 438--439
 
 [10]
 
+<<<<<<< HEAD
 [11]
 Underfull \hbox (badness 10000) in paragraph at lines 584--585
+=======
+[10]
+
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 570--571
+>>>>>>> d1d0beeba2b4fd8c26edb932c9a375b2a7451755
 
  []
 
@@ -610,9 +635,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 584--585
 
 [12]
 
+<<<<<<< HEAD
 [13]
 
 [14] (informe.aux
+=======
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 639.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\sin' on input line 639.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\pi' on input line 639.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 639.
+
+
+
+[13]
+
+[14]
+
+[15] (informe.aux
+>>>>>>> d1d0beeba2b4fd8c26edb932c9a375b2a7451755
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
@@ -621,6 +671,7 @@ LaTeX2e <2024-11-01>
 L3 programming layer <2024-11-02>
  ***********
 Package rerunfilecheck Info: File `informe.out' has not changed.
+<<<<<<< HEAD
 (rerunfilecheck)             Checksum: F4FB4B3D012BF72F36BC585FE73576CF;6644.
  ) 
 Here is how much of TeX's memory you used:
@@ -653,4 +704,41 @@ PDF statistics:
  646 PDF objects out of 1000 (max. 8388607)
  82 named destinations out of 1000 (max. 500000)
  225 words of extra memory for PDF output out of 10000 (max. 10000000)
+=======
+(rerunfilecheck)             Checksum: C16B9BFFD977A51B1C857EB5112FF8C2;6827.
+ ) 
+Here is how much of TeX's memory you used:
+ 15363 strings out of 469940
+ 240923 string characters out of 5469893
+ 831384 words of memory out of 5000000
+ 41896 multiletter control sequences out of 15000+600000
+ 643201 words of font info for 82 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 75i,10n,79p,499b,522s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\casa\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1
+200.pk> <C:\Users\casa\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\
+ectt1200.pk> <C:\Users\casa\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dp
+i600\ecbx2488.pk> <C:\Users\casa\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/
+ec/dpi600\ecrm1200.pk> <C:\Users\casa\AppData\Local\MiKTeX\fonts/pk/ljfour/jkna
+ppen/ec/dpi600\ecbx1200.pk> <C:\Users\casa\AppData\Local\MiKTeX\fonts/pk/ljfour
+/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\casa\AppData\Local\MiKTeX\fonts/pk/l
+jfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\casa\AppData\Local\MiKTeX\fonts
+/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\casa\AppData\Local\MiKTeX\
+fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk> <C:\Users\casa\AppData\Local\Mi
+KTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk><C:/Users/casa/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/casa/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/c
+asa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/
+Users/casa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.p
+fb><C:/Users/casa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmr6.pfb><C:/Users/casa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmr8.pfb><C:/Users/casa/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+amsfonts/cm/cmsy10.pfb><C:/Users/casa/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmsy8.pfb>
+Output written on informe.pdf (15 pages, 269747 bytes).
+PDF statistics:
+ 673 PDF objects out of 1000 (max. 8388607)
+ 89 named destinations out of 1000 (max. 500000)
+ 233 words of extra memory for PDF output out of 10000 (max. 10000000)
+>>>>>>> d1d0beeba2b4fd8c26edb932c9a375b2a7451755
 
